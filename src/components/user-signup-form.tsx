@@ -12,11 +12,10 @@ import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "./ui/toast";
 import { error } from "console";
-import { signInWithEmailAndPassword } from "firebase/auth";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export default function UserAuthForm({
+export default function UserSignupForm({
   className,
   ...props
 }: UserAuthFormProps) {
@@ -59,7 +58,15 @@ export default function UserAuthForm({
         throw new Error("Not a valid email");
       }
 
-      const res = await signInWithEmailAndPassword(auth, email, password);
+      if (password.length < 6) {
+        throw new Error("Password should be atleast 6 characters");
+      }
+
+      if (email === "" || password === "") {
+        throw new Error("Email or password cannot be empty");
+      }
+
+      const res = await createUserWithEmailAndPassword(email, password);
       console.log(res);
 
       if (res) {
@@ -71,20 +78,19 @@ export default function UserAuthForm({
       } else {
         toast({
           variant: "destructive",
-          title: "User Login failed!",
+          title: "User with this below email id already exists!",
           description: "Please use a different email to signin",
           action: <ToastAction altText="Try again">Okayy!</ToastAction>,
         });
         setIsLoading(false);
       }
     } catch (err) {
-      console.log(err);
       const a = new String(err);
       toast({
         variant: "destructive",
         title: "Ahh Ahh !",
 
-        description: "Invalid Credentials!",
+        description: a,
         action: <ToastAction altText="Try again">Okayy!</ToastAction>,
       });
     }
@@ -130,7 +136,7 @@ export default function UserAuthForm({
             {isLoading && (
               <LucideLoader className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Emaill
+            Sign Up with Emaill
           </Button>
 
           {/* <button className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
