@@ -3,15 +3,28 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 
+export const projects = [
+  {
+    title: "Pro",
+    description: "A pro tier with 34000 WIT Cents",
+    link: "https://stripe.com",
+  },
+  {
+    title: "Premium",
+    description: "A premium tier with unlimited cents.",
+    link: "https://netflix.com",
+  },
+  {
+    title: "Premium +",
+    description: "A premium + tier dynamic user support also",
+    link: "https://google.com",
+  },
+];
+
+
 export const HoverEffect = ({
-  items,
   className,
 }: {
-  items: {
-    title: string;
-    description: string;
-    link: string;
-  }[];
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -23,7 +36,7 @@ export const HoverEffect = ({
         className
       )}
     >
-      {items.map((item, idx) => (
+      {projects.map((item, idx) => (
         <Link
           href={item?.link}
           key={item?.link}
