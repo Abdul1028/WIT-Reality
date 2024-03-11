@@ -1,4 +1,5 @@
-import { Metadata } from "next";
+"use client"
+// import { Metadata } from "next";
 import Image from "next/image";
 
 import { CalendarDateRangePicker } from "@/components/date-range-picker";
@@ -9,6 +10,7 @@ import { Search } from "@/components/search";
 import TeamSwitcher from "@/components/team-switcher";
 import { UserNav } from "@/components/user-nav";
 import { Button } from "@/components/ui/button";
+import { useState ,useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Card,
@@ -17,13 +19,91 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { auth} from '../FireBaseConfig'
+import { initializeApp } from 'firebase/app';
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
-};
+
+// export const metadata: Metadata = {
+//   title: "Dashboard",
+//   description: "Example dashboard app built using the components.",
+// };
+
+
 
 export default function DashboardPage() {
+
+  const [uid,setUid] =useState("")
+  const [cred,setCred] =useState("")
+  const [ana,setAna] =useState("")
+  const [retr,setRetr] =useState("")
+  const [genr,setGenr] =useState("")
+  const [img,setImg] =useState("")
+
+  
+  useEffect(() => {
+    if (!auth.app) {
+        initializeApp(auth.options);
+    }
+    // const a = auth.currentUser?.uid
+    // setUid(a.toString())
+    // console.log("uid",uid)
+
+
+}, []);
+
+
+  useEffect(() => {
+      const db = getFirestore();
+
+      // const uid = auth.currentUser.uid; // Get the UID of the logged-in user
+      const uid = "uEqLM4vZtdafSm9qouyr9yFf9h63"
+      const a = auth.currentUser?.uid
+      const userDocRef = doc(db, 'users', uid);
+
+      const fetchCredits = async () => {
+          try {
+              const userDocSnapshot = await getDoc(userDocRef);
+              if (userDocSnapshot.exists()) {
+                  const userData = userDocSnapshot.data();
+                  // Assuming "credits" is the key for credits in the user document
+                  console.log(userData)
+                  const { credits, tweets_retrieved, tweets_generated, tweets_analyzed, images_generated } = userData;
+                  // Store each value in separate variables
+                  const creditsValue = credits;
+                  const tweetsRetrievedValue = tweets_retrieved;
+                  const tweetsGeneratedValue = tweets_generated;
+                  const tweetsAnalyzedValue = tweets_analyzed;
+                  const imagesGeneratedValue = images_generated;
+          
+                  console.log("Credits are "+tweetsRetrievedValue)
+                  console.log("Credits are "+tweetsGeneratedValue)
+                  console.log("Credits are "+tweetsAnalyzedValue)
+                  console.log("Credits are: "+imagesGeneratedValue)
+                  console.log("Credits are: "+creditsValue)
+                  console.log(uid);
+
+                  setCred(creditsValue)
+                  setAna(tweetsAnalyzedValue)
+                  setGenr(tweetsGeneratedValue)
+                  setRetr(tweetsRetrievedValue)
+                  setImg(imagesGeneratedValue)
+
+                  
+                  return userData
+
+
+              } else {
+                  console.error('User document does not exist');
+              }
+          } catch (error) {
+              console.error('Error fetching credits:', error);
+          }
+      };
+
+      fetchCredits();
+  }, []);
+
   return (
     <>
       <div className="md:hidden">
@@ -95,7 +175,7 @@ export default function DashboardPage() {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">62745 WIT-Cents</div>
+                    <div className="text-2xl font-bold">{cred} WIT-Cents</div>
                     <p className="text-xs text-muted-foreground">
                       +20.1% from last month
                     </p>
@@ -122,9 +202,9 @@ export default function DashboardPage() {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
+                    <div className="text-2xl font-bold">+{genr}  </div>
                     <p className="text-xs text-muted-foreground">
-                      +180.1% from last month
+                      + 687 % from last month
                     </p>
                   </CardContent>
                 </Card>
@@ -146,7 +226,7 @@ export default function DashboardPage() {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+12,234</div>
+                    <div className="text-2xl font-bold">+ {retr}</div>
                     <p className="text-xs text-muted-foreground">
                       +19% from last month
                     </p>
@@ -155,7 +235,7 @@ export default function DashboardPage() {
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
-                      Active Now
+                      Images Generated
                     </CardTitle>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -171,9 +251,9 @@ export default function DashboardPage() {
                     </svg>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
+                    <div className="text-2xl font-bold">+ {img }</div>
                     <p className="text-xs text-muted-foreground">
-                      +201 since last hour
+                      + since last hour
                     </p>
                   </CardContent>
                 </Card>
