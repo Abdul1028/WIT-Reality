@@ -43,7 +43,7 @@ export default function DashboardPage() {
   
   useEffect(() => {
     if (!auth.app) {
-        initializeApp(auth.options);
+        initializeApp(auth.app);
     }
     // const a = auth.currentUser?.uid
     // setUid(a.toString())
