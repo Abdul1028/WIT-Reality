@@ -40,7 +40,7 @@ export default function ThreeDCardDemo() {
                 as="button"
                 className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
               >
-                <Link href={"http://localhost:8501/"}>
+                <Link href={"http://instagram-realiyty.streamlit.app/"}>
                 Try now →
                 </Link>
               </CardItem>
@@ -87,7 +87,7 @@ export default function ThreeDCardDemo() {
                 as="button"
                 className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
               >
-                <Link href={"http://localhost:8503/"}>
+                <Link href={"http://whatsapp-reality.streamlit.app/"}>
                 Try now →
                 </Link>
               </CardItem>
@@ -134,7 +134,7 @@ export default function ThreeDCardDemo() {
                 as="button"
                 className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
               >
-                <Link href={"http://localhost:8502/"}>
+                <Link href={"http://twitter-reality.streamlit.app/"}>
                   Try now →
                 </Link>
               </CardItem>
