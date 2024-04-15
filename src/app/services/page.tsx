@@ -40,7 +40,7 @@ export default function ThreeDCardDemo() {
                 as="button"
                 className="px-4 py-2 rounded-xl text-xs font-normal dark:text-white"
               >
-                <Link href={"http://instagram-realiyty.streamlit.app/"}>
+                <Link href={"https://ig-reality.streamlit.app/"}>
                 Try now →
                 </Link>
               </CardItem>
